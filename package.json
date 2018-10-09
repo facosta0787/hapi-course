@@ -1,0 +1,27 @@
+{
+  "name": "platzi-overflow",
+  "version": "1.0.0",
+  "description": "A site like stack overflow",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --ext js,hbs",
+    "lint": "standard",
+    "lint:fix": "standar --fix"
+  },
+  "author": "@facosta0787",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.18.4",
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.1",
+    "firebase-admin": "^6.0.0",
+    "handlebars": "^4.0.12",
+    "hapi": "^17.6.0",
+    "inert": "^5.1.0",
+    "joi": "^13.7.0",
+    "vision": "^5.4.0"
+  }
+}
