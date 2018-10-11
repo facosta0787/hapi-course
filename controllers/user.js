@@ -1,5 +1,6 @@
 'user strict'
 
+const Boom = require('boom')
 const UserModel = require('../models/index').user
 
 async function createUser (req, h) {
@@ -8,10 +9,16 @@ async function createUser (req, h) {
     result = await UserModel.create(req.payload)
   } catch(error){
     console.error(error)
-    return h.response('Error creating user').code(500)
+    return h.view('register', {
+      title: 'Registro',
+      error: 'Error creando el usuario'
+    })
   }
 
-  return h.response(`Usuaerio creado ID: ${result}`)
+  return h.view('register', {
+    title: 'Registro',
+    success: 'Usuario creado con exito'
+  })
 }
 
 async function validateUser (req, h) {
@@ -19,11 +26,17 @@ async function validateUser (req, h) {
   try {
     result = await UserModel.validate(req.payload)
     if(!result) {
-      return h.response('Email y/o contraseña incorrecta').code(401)
+      return h.view('login', {
+        title: 'Login',
+        error: 'Email y/o contraseña incorrecta'
+      })
     }
   } catch(error) {
     console.error(error)
-    return h.response('Error validando user').code(500)
+    return h.view('login', {
+      title: 'Login',
+      error: 'Problemas validando el usuario'
+    })
   }
 
   return h.redirect('/').state('user', {
@@ -36,8 +49,14 @@ function logout (req, h) {
   return h.redirect('/login').unstate('user')
 }
 
+function failValidation(req, h, error) {
+  return Boom.badRequest('Fallo la validacion', req.payload)
+}
+
+
 module.exports = {
   createUser,
   validateUser,
-  logout
+  logout,
+  failValidation
 }

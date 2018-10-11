@@ -24,7 +24,8 @@ const routes = [
           name: joi.string().min(3).required(),
           email: joi.string().email().required(),
           password: joi.string().min(6).required()
-        }
+        },
+        failAction: user.failValidation
       }
     },
     handler: user.createUser
@@ -47,20 +48,26 @@ const routes = [
         payload: {
           email: joi.string().email().required(),
           password: joi.string().min(6).required()
-        }
+        },
+        failAction: user.failValidation
       }
     },
     handler: user.validateUser
   },
   {
     method: 'GET',
-    path: '/{param*}',
+    path: '/assets/{param*}',
     handler: {
       directory: {
         path: '.',
         index: ['index.html']
       }
     }
+  },
+  {
+    method: ['GET', 'POST'],
+    path: '/{any*}',
+    handler: site.notFound
   }
 ]
 
