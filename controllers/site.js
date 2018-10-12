@@ -1,9 +1,18 @@
 'use strict'
 
-function home (req, h) {
+const question = require('../models/index').question
+
+async function home (req, h) {
+  let data
+  try {
+    data = await question.getLast(10)
+  } catch(err) {
+    console.log(err)
+  }
   return h.view('index', {
     title: 'Home',
     user: req.state.user,
+    questions: data
   })
 }
 
@@ -42,10 +51,22 @@ function fileNotFound(req, h) {
   return h.continue
 }
 
+function ask(req, h){
+  if(!req.state.user){
+    return h.redirect('/login')
+  }
+
+  return h.view('ask', {
+    title: 'Crear pregunta',
+    user: req.state.user
+  })
+}
+
 module.exports = {
   home,
   register,
   login,
   notFound,
-  fileNotFound
+  fileNotFound,
+  ask
 }

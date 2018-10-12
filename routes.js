@@ -3,6 +3,7 @@
 const joi = require('joi')
 const site = require('./controllers/site')
 const user = require('./controllers/user')
+const questions = require('./controllers/question')
 
 const routes = [
   {
@@ -39,6 +40,25 @@ const routes = [
     method: 'GET',
     path: '/logout',
     handler: user.logout
+  },
+  {
+    method: 'GET',
+    path: '/ask',
+    handler: site.ask
+  },
+  {
+    method: 'POST',
+    path: '/create-question',
+    options: {
+      validate: {
+        payload: {
+          title: joi.string().required(),
+          description: joi.string().required()
+        },
+        failAction: user.failValidation
+      }
+    },
+    handler: questions.createQuestion
   },
   {
     method: 'POST',
